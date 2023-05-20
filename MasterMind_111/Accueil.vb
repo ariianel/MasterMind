@@ -1,12 +1,17 @@
 ﻿Public Class Accueil
     Private Sub Accueil_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Dim nomsJoueurs As String() = Module1.GetNomsJoueurs()
+        Dim nomsJoueurs As String() = Module1.GetNomsJoueurs() 'Récupère tous les joueurs 
 
+        'mets à jours les jours dans notres ComboBox
         ComboBox1.DataSource = nomsJoueurs
         ComboBox2.DataSource = nomsJoueurs
+
+        ComboBox1.SelectedIndex = -1 ' Désélectionne l'élément sélectionné
+        ComboBox2.SelectedIndex = -1
     End Sub
 
     Private Sub VerifierNomsJoueurs()
+        'Vérif si les joueurs ont les mêmes prénoms
         If ComboBox1.Text.Trim() <> "" AndAlso ComboBox2.Text.Trim() <> "" AndAlso ComboBox1.Text.Trim() = ComboBox2.Text.Trim() Then
             MessageBox.Show("Les deux joueurs ne peuvent pas avoir le même nom.")
             ComboBox1.Text = ""

@@ -83,9 +83,10 @@ Partial Class Accueil
         'Button2
         '
         Me.Button2.BackColor = System.Drawing.Color.White
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup
         Me.Button2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.Button2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.Button2.Location = New System.Drawing.Point(341, 363)
+        Me.Button2.Location = New System.Drawing.Point(340, 363)
         Me.Button2.Name = "Button2"
         Me.Button2.Size = New System.Drawing.Size(101, 43)
         Me.Button2.TabIndex = 5
@@ -107,7 +108,6 @@ Partial Class Accueil
         '
         'ComboBox1
         '
-        Me.ComboBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat
         Me.ComboBox1.FormattingEnabled = True
         Me.ComboBox1.Location = New System.Drawing.Point(52, 195)
         Me.ComboBox1.Name = "ComboBox1"
@@ -125,9 +125,9 @@ Partial Class Accueil
         'PictureBox1
         '
         Me.PictureBox1.Image = Global.MasterMind_111.My.Resources.Resources.brain
-        Me.PictureBox1.Location = New System.Drawing.Point(141, -28)
+        Me.PictureBox1.Location = New System.Drawing.Point(141, -35)
         Me.PictureBox1.Name = "PictureBox1"
-        Me.PictureBox1.Size = New System.Drawing.Size(500, 434)
+        Me.PictureBox1.Size = New System.Drawing.Size(465, 404)
         Me.PictureBox1.TabIndex = 3
         Me.PictureBox1.TabStop = False
         '

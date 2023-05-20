@@ -135,7 +135,7 @@ Partial Class Pattern
         Me.Controls.Add(Me.Label2)
         Me.Controls.Add(Me.Label1)
         Me.Name = "Pattern"
-        Me.Text = "Pattern"
+        Me.Text = "Caractères à deviner !"
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

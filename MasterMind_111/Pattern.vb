@@ -33,10 +33,15 @@
 
         If valide = 5 Then
             For i = 0 To 4
-                'On traite les caractères entrées
+                ' On traite les caractères entrés
+                Dim j As Integer = 0 ' Indice pour parcourir les TextBox
                 For Each txtBox As TextBox In Me.Controls.OfType(Of TextBox)()
-                    'On enregistre la textBox dans le tableau caractere
-                    Module1.caracteres(i) = txtBox.Text
+                    ' On enregistre la TextBox dans le tableau caracteresATrouver à la position i
+                    If j = i Then
+                        Module1.caracteresATrouver(i) = txtBox.Text
+                        Exit For ' Sortir de la boucle après avoir trouvé la TextBox correspondante
+                    End If
+                    j += 1
                 Next
             Next
             'On exécute le troisième formulaire 
