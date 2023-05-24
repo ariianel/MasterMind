@@ -1,6 +1,10 @@
 ﻿Public Class Accueil
     Private Sub Accueil_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+
         Dim nomsJoueurs As String() = Module1.GetNomsJoueurs() 'Récupère tous les joueurs 
+
+        'BOUTON REJOUER
+        Button4.Visible = False
 
         'mets à jours les jours dans notres ComboBox
         ComboBox1.DataSource = nomsJoueurs
@@ -8,6 +12,11 @@
 
         ComboBox1.SelectedIndex = -1 ' Désélectionne l'élément sélectionné
         ComboBox2.SelectedIndex = -1
+
+        Timer1.Start()
+        Timer1_Tick(sender, e)
+
+
     End Sub
 
     Private Sub VerifierNomsJoueurs()
@@ -17,15 +26,13 @@
             ComboBox1.Text = ""
         Else
             'Si les deux prénoms sont différents
-            Dim nom1 As String = ComboBox2.Text.Trim()
-            Dim nom2 As String = ComboBox1.Text.Trim()
+            Dim firstName As String = ComboBox2.Text.Trim()
+            Dim secondName As String = ComboBox1.Text.Trim()
 
-            'On enregistre le Prenom temporairement dans une liste
-            For i = 0 To Module1.nbJoueurs
-                Module1.newJoueurs.Add(nom1)
-                Module1.newJoueurs.Add(nom2)
-
-            Next
+            'On enregistre nos deux joueurs temporairement dans deux variables et un tableau
+            Module1.nom1 = firstName
+            Module1.nom2 = secondName
+            Module1.ajout_ephemere(firstName, 0, 0, 0, 0, 0, secondName, 0, 0, 0, 0, 0)
 
             'On peut lancer le deuxième formulaire
             Pattern.Show()
@@ -45,5 +52,25 @@
 
     Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
         VerifierNomsJoueurs()
+
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+    End Sub
+
+    Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
+        'On peut lancer le deuxième formulaire
+        Pattern.Show()
+        Me.Hide()
+    End Sub
+
+    Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
+        Me.Hide()
+        Options.Show()
+    End Sub
+
+    Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
+        Me.Hide()
+        Score.Show()
     End Sub
 End Class

@@ -48,6 +48,7 @@ Partial Class Game
         Me.PanelTextBox = New System.Windows.Forms.Panel()
         Me.Label11 = New System.Windows.Forms.Label()
         Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.Button2 = New System.Windows.Forms.Button()
         CType(Me.DataGridView1, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.PanelTextBox.SuspendLayout()
         Me.SuspendLayout()
@@ -278,12 +279,26 @@ Partial Class Game
         'Timer1
         '
         '
+        'Button2
+        '
+        Me.Button2.BackColor = System.Drawing.Color.FromArgb(CType(CType(255, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer))
+        Me.Button2.FlatStyle = System.Windows.Forms.FlatStyle.Popup
+        Me.Button2.Font = New System.Drawing.Font("Segoe UI", 9.0!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.Button2.ForeColor = System.Drawing.Color.DarkRed
+        Me.Button2.Location = New System.Drawing.Point(408, 488)
+        Me.Button2.Name = "Button2"
+        Me.Button2.Size = New System.Drawing.Size(87, 27)
+        Me.Button2.TabIndex = 20
+        Me.Button2.Text = "Bye"
+        Me.Button2.UseVisualStyleBackColor = False
+        '
         'Game
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(508, 528)
+        Me.Controls.Add(Me.Button2)
         Me.Controls.Add(Me.Label11)
         Me.Controls.Add(Me.PanelTextBox)
         Me.Controls.Add(Me.DataGridView1)
@@ -332,4 +347,5 @@ Partial Class Game
     Friend WithEvents PanelTextBox As Panel
     Friend WithEvents Label11 As Label
     Friend WithEvents Timer1 As Timer
+    Friend WithEvents Button2 As Button
 End Class

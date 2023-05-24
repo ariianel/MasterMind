@@ -1,6 +1,7 @@
 ﻿Public Class Pattern
     Private Sub Pattern_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Text = "Pattern à deviner" 'titre fenêtre
+        Label3.Text = getCaractereATrouver()
     End Sub
 
     Private Sub TextBox1_KeyPress(sender As Object, e As KeyPressEventArgs) Handles TextBox1.KeyPress
@@ -48,5 +49,11 @@
             Me.Hide()
             Game.Show()
         End If
+
+        ' Réinitialise le contenu des TextBox
+        For Each txtBox As TextBox In Me.Controls.OfType(Of TextBox)()
+            txtBox.Text = ""
+        Next
+
     End Sub
 End Class
