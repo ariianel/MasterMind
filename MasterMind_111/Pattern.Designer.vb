@@ -34,8 +34,10 @@ Partial Class Pattern
         Me.PictureBox2 = New System.Windows.Forms.PictureBox()
         Me.Label1 = New System.Windows.Forms.Label()
         Me.PictureBox1 = New System.Windows.Forms.PictureBox()
+        Me.Panel1 = New System.Windows.Forms.Panel()
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.Panel1.SuspendLayout()
         Me.SuspendLayout()
         '
         'Label2
@@ -79,7 +81,7 @@ Partial Class Pattern
         'TextBox1
         '
         Me.TextBox1.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox1.Location = New System.Drawing.Point(76, 90)
+        Me.TextBox1.Location = New System.Drawing.Point(0, 16)
         Me.TextBox1.Name = "TextBox1"
         Me.TextBox1.Size = New System.Drawing.Size(38, 20)
         Me.TextBox1.TabIndex = 4
@@ -87,7 +89,7 @@ Partial Class Pattern
         'TextBox2
         '
         Me.TextBox2.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox2.Location = New System.Drawing.Point(162, 90)
+        Me.TextBox2.Location = New System.Drawing.Point(86, 16)
         Me.TextBox2.Name = "TextBox2"
         Me.TextBox2.Size = New System.Drawing.Size(41, 20)
         Me.TextBox2.TabIndex = 5
@@ -95,7 +97,7 @@ Partial Class Pattern
         'TextBox3
         '
         Me.TextBox3.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox3.Location = New System.Drawing.Point(247, 90)
+        Me.TextBox3.Location = New System.Drawing.Point(171, 16)
         Me.TextBox3.Name = "TextBox3"
         Me.TextBox3.Size = New System.Drawing.Size(41, 20)
         Me.TextBox3.TabIndex = 6
@@ -103,7 +105,7 @@ Partial Class Pattern
         'TextBox4
         '
         Me.TextBox4.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox4.Location = New System.Drawing.Point(334, 90)
+        Me.TextBox4.Location = New System.Drawing.Point(258, 16)
         Me.TextBox4.Name = "TextBox4"
         Me.TextBox4.Size = New System.Drawing.Size(41, 20)
         Me.TextBox4.TabIndex = 7
@@ -111,7 +113,7 @@ Partial Class Pattern
         'TextBox5
         '
         Me.TextBox5.ForeColor = System.Drawing.Color.FromArgb(CType(CType(0, Byte), Integer), CType(CType(64, Byte), Integer), CType(CType(64, Byte), Integer))
-        Me.TextBox5.Location = New System.Drawing.Point(431, 90)
+        Me.TextBox5.Location = New System.Drawing.Point(355, 16)
         Me.TextBox5.Name = "TextBox5"
         Me.TextBox5.Size = New System.Drawing.Size(41, 20)
         Me.TextBox5.TabIndex = 8
@@ -158,19 +160,27 @@ Partial Class Pattern
         Me.PictureBox1.TabIndex = 10
         Me.PictureBox1.TabStop = False
         '
+        'Panel1
+        '
+        Me.Panel1.Controls.Add(Me.TextBox5)
+        Me.Panel1.Controls.Add(Me.TextBox4)
+        Me.Panel1.Controls.Add(Me.TextBox3)
+        Me.Panel1.Controls.Add(Me.TextBox2)
+        Me.Panel1.Controls.Add(Me.TextBox1)
+        Me.Panel1.Location = New System.Drawing.Point(102, 74)
+        Me.Panel1.Name = "Panel1"
+        Me.Panel1.Size = New System.Drawing.Size(416, 59)
+        Me.Panel1.TabIndex = 12
+        '
         'Pattern
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.FromArgb(CType(CType(192, Byte), Integer), CType(CType(192, Byte), Integer), CType(CType(255, Byte), Integer))
         Me.ClientSize = New System.Drawing.Size(660, 253)
+        Me.Controls.Add(Me.Panel1)
         Me.Controls.Add(Me.PictureBox2)
         Me.Controls.Add(Me.Button2)
-        Me.Controls.Add(Me.TextBox5)
-        Me.Controls.Add(Me.TextBox4)
-        Me.Controls.Add(Me.TextBox3)
-        Me.Controls.Add(Me.TextBox2)
-        Me.Controls.Add(Me.TextBox1)
         Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.Label3)
         Me.Controls.Add(Me.Label2)
@@ -180,6 +190,8 @@ Partial Class Pattern
         Me.Text = "Caractères à deviner !"
         CType(Me.PictureBox2, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.Panel1.ResumeLayout(False)
+        Me.Panel1.PerformLayout()
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -197,4 +209,5 @@ Partial Class Pattern
     Friend WithEvents Button2 As Button
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents Panel1 As Panel
 End Class

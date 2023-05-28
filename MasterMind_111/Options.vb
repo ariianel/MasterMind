@@ -22,7 +22,7 @@ Public Class Options
         For i As Integer = 0 To GroupBox1.Controls.Count - 1
             CJ(i) = GroupBox1.Controls(i).Text
         Next
-        setCaractereATrouver(CJ(0), CJ(1), CJ(2), CJ(3), CJ(4))
+        setCaracteresAutorise(CJ(4), CJ(3), CJ(2), CJ(1), CJ(0))
         MessageBox.Show("Les caractères autorisés ont été définie avec succès.")
     End Sub
 

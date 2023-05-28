@@ -11,6 +11,7 @@ Module Module1
     Private tempsBool As Boolean = True
     Private cheminFichier As String = "Joueurs.txt"
     Private tempsImparti As Integer = 90 '1min30
+    Private caracteresAutorise() As Char = {"#", "$", "£", "%", "@"} 'Par défaut
 
     Public tjoueurs() As JOUEURS 'Tableau qui stocks tous les joueurs
     Public caracteresATrouver() As Char = {"#", "$", "£", "%", "@"} 'Tableau ou l'on stock les caractères à trouver
@@ -18,6 +19,7 @@ Module Module1
     Public colorAbsent = Color.Black, colorPresent = Color.Blue, colorBienPlace = Color.Green
     Public nom1 As String
     Public nom2 As String
+
 
     'Structure qui définit un joueur
     Structure JOUEURS
@@ -149,7 +151,28 @@ Module Module1
         Return noms.ToArray()
     End Function
 
-    Public Function setCaracteresCHoisis(carac1 As String, carac2 As String, carac3 As String, carac4 As String, carac5 As String)
+    Public Function setCaracteresAutorise(carac1 As Char, carac2 As Char, carac3 As Char, carac4 As Char, carac5 As Char)
+        caracteresAutorise(0) = carac1
+        caracteresAutorise(1) = carac2
+        caracteresAutorise(2) = carac3
+        caracteresAutorise(3) = carac4
+        caracteresAutorise(4) = carac5
+
+    End Function
+
+    Public Function getCaracteresAutorise()
+        Return caracteresAutorise
+    End Function
+
+    Public Function getCaractereAutoriseAtIndex(index As Integer) As Char
+        If index >= 0 AndAlso index < 5 Then
+            Return caracteresAutorise(index)
+        Else
+            Throw New IndexOutOfRangeException("L'index spécifié est invalide.")
+        End If
+    End Function
+
+    Public Function setCaracteresCHoisis(carac1 As Char, carac2 As Char, carac3 As Char, carac4 As Char, carac5 As Char)
         caracteresChoisis(0) = carac1
         caracteresChoisis(1) = carac2
         caracteresChoisis(2) = carac3
@@ -158,7 +181,7 @@ Module Module1
 
     End Function
 
-    Public Function setCaractereATrouver(carac1 As String, carac2 As String, carac3 As String, carac4 As String, carac5 As String)
+    Public Function setCaractereATrouver(carac1 As Char, carac2 As Char, carac3 As Char, carac4 As Char, carac5 As Char)
         caracteresATrouver(0) = carac1
         caracteresATrouver(1) = carac2
         caracteresATrouver(2) = carac3

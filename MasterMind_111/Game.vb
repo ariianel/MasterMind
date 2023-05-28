@@ -10,6 +10,7 @@ Public Class Game
         If inputValide() Then
             'Enregistre dans un tableau les caractères choisis
             Module1.setCaracteresCHoisis(TextBox1.Text, TextBox2.Text, TextBox3.Text, TextBox4.Text, TextBox5.Text)
+            MsgBox(caracteresChoisis)
             nbCoups -= 1
             Label11.Text = "Il vous reste " & nbCoups & " coup(s)..."
             Dim propositions As New List(Of String) ' Liste pour stocker les propositions du joueur 2
@@ -111,7 +112,7 @@ Public Class Game
         'Vérifier la validité des données
         For Each txtBox As TextBox In PanelTextBox.Controls.OfType(Of TextBox)()
             'Effectuer une action pour chaque TextBox
-            If txtBox.Text <> "#" AndAlso txtBox.Text <> "$" AndAlso txtBox.Text <> "£" AndAlso txtBox.Text <> "%" AndAlso txtBox.Text <> "@" Then
+            If txtBox.Text <> getCaractereAutoriseAtIndex(0) AndAlso txtBox.Text <> getCaractereAutoriseAtIndex(1) AndAlso txtBox.Text <> getCaractereAutoriseAtIndex(2) AndAlso txtBox.Text <> getCaractereAutoriseAtIndex(3) AndAlso txtBox.Text <> getCaractereAutoriseAtIndex(4) Then
                 MessageBox.Show("Caractère invalide dans " & txtBox.Name)
                 txtBox.Text = ""
             Else
@@ -252,5 +253,8 @@ Public Class Game
 
     End Sub
 
+    Private Sub PictureBox1_Click(sender As Object, e As EventArgs) Handles PictureBox1.Click
+
+    End Sub
 End Class
 
