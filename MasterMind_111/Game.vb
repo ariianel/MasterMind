@@ -3,13 +3,15 @@ Imports MasterMind_111.Module1
 
 Public Class Game
     Dim valide As Integer = 0
-    Public nbCoups As Integer = 15
-    Private tmpRestant As Integer = tempsImparti '1m30
+    Public nbCoups As Integer = Options.newNbCoups 'newNbCoups init à 15 coups par défaut
+    Private tmpRestant As Integer = getTempsImparti() '1m30
+
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         If inputValide() Then
             'Enregistre dans un tableau les caractères choisis
-            Module1.setCaracteresCHoisis(TextBox5.Text, TextBox4.Text, TextBox3.Text, TextBox2.Text, TextBox1.Text)
-
+            Module1.setCaracteresCHoisis(TextBox1.Text, TextBox2.Text, TextBox3.Text, TextBox4.Text, TextBox5.Text)
+            nbCoups -= 1
+            Label11.Text = "Il vous reste " & nbCoups & " coup(s)..."
             Dim propositions As New List(Of String) ' Liste pour stocker les propositions du joueur 2
             Dim row As New DataGridViewRow
 
@@ -21,17 +23,13 @@ Public Class Game
                     If (Module1.CaractereDevinable(txt.Text)) Then
                         'Vérif si caractère bonne position
                         If (Module1.CaractereBonnePosition(txt.Text, txt.Tag)) Then
-
-                            txt.BackColor = Color.Green ' Présent et bien placé
+                            txt.BackColor = colorBienPlace ' Présent et bien placé
                         Else
-
-                            txt.BackColor = Color.Blue ' Présent mais mal placé
+                            txt.BackColor = colorPresent ' Présent mais mal placé
                         End If
                     Else
-
-                        txt.BackColor = Color.Black ' Caractère absent
+                        txt.BackColor = colorAbsent ' Caractère absent
                     End If
-
                 End If
             Next
 
@@ -48,46 +46,58 @@ Public Class Game
             Dim caracteresTrouves As Boolean = True
 
             For i As Integer = 0 To 4
-                If Not Module1.CaractereDevinable(Module1.caracteresChoisis(i).ToString()) Then
+                If Not Module1.CaractereBonnePosition(Module1.caracteresChoisis(i).ToString(), i) Then
                     caracteresTrouves = False
                     Exit For
                 End If
             Next
 
-            Dim joueur1 As JOUEURS = ejoueurs(0)
-            Dim joueur2 As JOUEURS = ejoueurs(1)
+            Dim joueur1Index As Integer = Array.FindIndex(tjoueurs, Function(joueur) joueur.nom = nom1)
+            Dim joueur2Index As Integer = Array.FindIndex(tjoueurs, Function(joueur) joueur.nom = nom2)
 
             If caracteresTrouves Then
                 Timer1.Stop()
-                MessageBox.Show("Félicitations, vous avez trouvé tous les caractères !")
-                joueur2.score += 1
-                joueur1.score -= 1
+                PictureBox2.Visible = True
+                Label12.Visible = True
+                Label12.Text = "Félicitations" & vbCrLf & "vous avez trouvé tous" & vbCrLf & " les caractères !"
+                tjoueurs(joueur2Index).score += 1
+                tjoueurs(joueur1Index).score -= 1
                 Button2.Visible = True
-                rejouerButton = True
+                setRejouerButton(True)
 
-                ' Ajouter le temps au joueur 1
-                joueur2.tempsCombinaison += tmpRestant
+                MettreAJourMeilleurTemps(nom2, tmpRestant)
+                tjoueurs(joueur2Index).tempsCombinaison += tmpRestant
 
             ElseIf DataGridView1.Rows.Count >= nbCoups Then
+                ' GAME OVER !!!!!!!!!
+                ' Mettre le fond du formulaire en noir
+                Me.BackColor = Color.Black
+                PictureBox1.SizeMode = PictureBoxSizeMode.CenterImage
+                PictureBox1.Visible = True
                 Timer1.Stop()
                 MessageBox.Show("Vous avez épuisé tous les essais. Les caractères à trouver étaient : " & New String(Module1.caracteresATrouver))
 
-                joueur2.score -= 1
-                joueur1.score += 1
-                Button2.Visible = True
-                rejouerButton = True
+                tjoueurs(joueur2Index).score -= 1
+                tjoueurs(joueur1Index).score += 1
 
-                ' Ajouter le temps au joueur 1
-                joueur1.tempsCombinaison += tmpRestant
+                Button2.Visible = True
+                setRejouerButton(True)
+
+                MettreAJourMeilleurTemps(nom2, tmpRestant)
+                tjoueurs(joueur2Index).tempsCombinaison += tmpRestant
+
             Else
                 'Recommencer 
                 'Réinitialiser les TextBox
                 'nbCoups -= 1
                 For Each txtBox As TextBox In PanelTextBox.Controls.OfType(Of TextBox)()
-                    txtBox.Text = ""
-                    txtBox.BackColor = SystemColors.Control
+                    If txtBox.BackColor <> colorBienPlace Then
+                        txtBox.Text = ""
+                        txtBox.BackColor = SystemColors.Control
+                    End If
                 Next
             End If
+
         Else
             MsgBox("InputValide is false")
         End If
@@ -124,9 +134,19 @@ Public Class Game
 
 
     Private Sub Game_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        Timer1.Interval = 1000
-        Timer1.Start()
-        Timer1_Tick(sender, e)
+        Label5.ForeColor = Module1.colorAbsent
+        Label6.ForeColor = Module1.colorPresent
+        Label7.ForeColor = Module1.colorBienPlace
+        PictureBox1.Visible = False
+
+        Label10.Text = ""
+        Label11.Text = "Il vous reste " & nbCoups & " coup(s)..."
+
+        If (getTempsBool() = True) Then
+            Timer1.Interval = 1000
+            Timer1.Start()
+            Timer1_Tick(sender, e)
+        End If
 
         'Bouton BYE
         Button2.Visible = False
@@ -136,7 +156,7 @@ Public Class Game
     Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
         tmpRestant -= 1
         Label10.Text = FormatTime(tmpRestant)
-        Label11.Text = "Il vous reste " & nbCoups & " coup(s)..."
+
 
         'Si le temps est écoulé
         If tmpRestant <= 0 Then
@@ -144,6 +164,7 @@ Public Class Game
 
             ' Vérifier si le joueur 2 a trouvé la combinaison
             Dim caracteresTrouves As Boolean = True
+
             For i As Integer = 0 To 4
                 If Not Module1.CaractereDevinable(Module1.caracteresChoisis(i).ToString()) Then
                     caracteresTrouves = False
@@ -151,32 +172,51 @@ Public Class Game
                 End If
             Next
 
-            Dim joueur1 As JOUEURS = ejoueurs(0)
-            Dim joueur2 As JOUEURS = ejoueurs(1)
+
+            Dim joueur1Index As Integer = Array.FindIndex(tjoueurs, Function(joueur) joueur.nom = nom1)
+            Dim joueur2Index As Integer = Array.FindIndex(tjoueurs, Function(joueur) joueur.nom = nom2)
 
             If caracteresTrouves Then
                 MessageBox.Show("Temps écoulé, mais le joueur 2 a trouvé la combinaison !")
-                rejouerButton = True
+                setRejouerButton(True)
+
                 ' Mettre en œuvre les actions pour que le joueur 2 perde un point et le joueur 1 en gagne un
-                joueur2.score += 1
-                joueur1.score -= 1
+                tjoueurs(joueur2Index).score += 1
+                tjoueurs(joueur1Index).score -= 1
                 Button2.Visible = True
 
-                ' Ajouter le temps au joueur 2
-                joueur2.tempsCombinaison += tmpRestant
+
+                MettreAJourMeilleurTemps(nom2, tmpRestant)
+                tjoueurs(joueur2Index).tempsCombinaison += tmpRestant
             Else
+                ' GAME OVER !!!!!!!!!
+                PictureBox1.SizeMode = PictureBoxSizeMode.CenterImage
+                PictureBox1.Visible = True
+
                 MessageBox.Show("Temps écoulé ! Le joueur 2 n'a pas trouvé la combinaison.")
-                rejouerButton = True
+                setRejouerButton(True)
                 ' Mettre en œuvre les actions pour que le joueur 2 perde un point et le joueur 1 en gagne un
-                joueur2.score -= 1
-                joueur1.score += 1
+                tjoueurs(joueur2Index).score -= 1
+                tjoueurs(joueur1Index).score += 1
                 Button2.Visible = True
-                ' Ajouter le temps au joueur 1
-                joueur1.tempsCombinaison += tmpRestant
+
+                MettreAJourMeilleurTemps(nom2, tmpRestant)
+                tjoueurs(joueur2Index).tempsCombinaison += tmpRestant
             End If
 
             ' Effectuer ici d'autres actions pour terminer la partie
         End If
+    End Sub
+
+    Private Sub MettreAJourMeilleurTemps(nom As String, temps As Integer)
+        For i As Integer = 0 To getnbJoueurs() - 1
+            If tjoueurs(i).nom = nom Then
+                If tjoueurs(i).meilleurTemps = 0 OrElse temps < tjoueurs(i).meilleurTemps Then
+                    tjoueurs(i).meilleurTemps = temps
+                End If
+                Exit For
+            End If
+        Next
     End Sub
 
     Private Function FormatTime(seconds As Integer) As String
@@ -190,53 +230,27 @@ Public Class Game
         Me.Close()
         Accueil.Show()
 
-        'Mise à jour des données
-        Dim joueur1 As JOUEURS = ejoueurs(0)
-        Dim joueur2 As JOUEURS = ejoueurs(1)
-
-        If rejouerButton OrElse DataGridView1.Rows.Count >= nbCoups Then
+        If getRejouerButton() OrElse DataGridView1.Rows.Count >= nbCoups Then
+            EnregistrerJoueursDansFichier()
             MessageBox.Show("La partie est terminée. Cliquez sur le bouton 'Rejouer' pour continuer.")
 
             ' Inverser les rôles des joueurs pour la partie suivante
             Dim firstName As String = Accueil.ComboBox2.Text.Trim()
             Dim secondName As String = Accueil.ComboBox1.Text.Trim()
 
-            ' Remplacer les noms des joueurs dans les ComboBox du formulaire Accueil
+            ' Remplacer les noms des joueurs dans les ComboBox du formulaire Accueil et les variables noms
             Accueil.ComboBox1.Text = firstName
             Accueil.ComboBox2.Text = secondName
+            Module1.nom1 = nom2
+            Module1.nom2 = nom1
             'Afficher le bouton REJOUER
             Accueil.Button4.Visible = True
 
-            joueur2.nbPartiesJoueur2 += 1
-            joueur1.nbPartiesJoueur1 += 1
-
-            ' Ajouter le temps au joueur 2
-            'joueur2.tempsCombinaison += tmpRestant
-
-            ' Vérifier et mettre à jour le meilleur temps du joueur 2
-            If joueur2.meilleurTemps = 0 OrElse tmpRestant < joueur2.meilleurTemps Then
-                joueur2.meilleurTemps = tmpRestant
-            End If
-
-            ' Ajouter le temps au joueur 1
-            'joueur1.tempsCombinaison += tmpRestant
-
-            ' Vérifier et mettre à jour le meilleur temps du joueur 1
-            If joueur1.meilleurTemps = 0 OrElse tmpRestant < joueur1.meilleurTemps Then
-                joueur1.meilleurTemps = tmpRestant
-            End If
 
         End If
 
-        'ENREGISTRER FICHIERR LES NOUVEAUX JOUEURS
-        Module1.EnregistrerJoueur(ejoueurs(0))
-        Module1.EnregistrerJoueur(ejoueurs(1))
-
-        'On échange les joueurs dans le tableau ephemère
-        ejoueurs(0) = joueur2
-        ejoueurs(1) = joueur1
-
 
     End Sub
+
 End Class
 

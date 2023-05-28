@@ -115,6 +115,12 @@
     <Compile Include="Pattern.vb">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Regles.Designer.vb">
+      <DependentUpon>Regles.vb</DependentUpon>
+    </Compile>
+    <Compile Include="Regles.vb">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Score.Designer.vb">
       <DependentUpon>Score.vb</DependentUpon>
     </Compile>
@@ -141,6 +147,9 @@
     <EmbeddedResource Include="Pattern.resx">
       <DependentUpon>Pattern.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Regles.resx">
+      <DependentUpon>Regles.vb</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Score.resx">
       <DependentUpon>Score.vb</DependentUpon>
     </EmbeddedResource>
@@ -159,6 +168,69 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\brain.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arc-en-ciel.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\arc-en-ciel-small.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\game over.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win2.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win3.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win %282%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\round-3d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\atom-3d.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\brain-small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3d-render-small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\vecteezy_trendy-grainy-background-with-vibrant-colors_18913339.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3d-render-convert.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3d-render-convert-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\happy_robot-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\happy_robot-small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\small-star.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3d-planet.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\3d-goutte.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\cyber-bg.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

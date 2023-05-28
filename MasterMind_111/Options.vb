@@ -1,4 +1,9 @@
-﻿Public Class Options
+﻿Imports System.CodeDom
+Imports System.Runtime.Versioning
+
+Public Class Options
+
+    Public newNbCoups As Integer = 15
     Private Sub Options_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Name = "Options"
 
@@ -15,7 +20,6 @@
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         Dim CJ(5) As String
         For i As Integer = 0 To GroupBox1.Controls.Count - 1
-            'CJ.Append(GroupBox1.Controls(i).Text)
             CJ(i) = GroupBox1.Controls(i).Text
         Next
         setCaractereATrouver(CJ(0), CJ(1), CJ(2), CJ(3), CJ(4))
@@ -26,8 +30,9 @@
         Dim couleur As DialogResult
         couleur = ColorDialog1.ShowDialog
         If couleur = Windows.Forms.DialogResult.OK Then
-            Button2.BackColor = ColorDialog1.Color
-            setcolorAbsent(ColorDialog1.Color)
+            Button2.BackgroundImage = Nothing ' Supprimer l'image d'arrière-plan du bouton
+            Button2.BackColor = ColorDialog1.Color ' Définir la couleur de fond du bouton
+            setColorAbsent(ColorDialog1.Color) ' Appeler la fonction pour définir la couleur d'absence
         End If
     End Sub
 
@@ -35,8 +40,9 @@
         Dim couleur As DialogResult
         couleur = ColorDialog2.ShowDialog
         If couleur = Windows.Forms.DialogResult.OK Then
+            Button3.BackgroundImage = Nothing
             Button3.BackColor = ColorDialog2.Color
-            setColorPresent(ColorDialog1.Color)
+            setColorPresent(ColorDialog2.Color)
         End If
     End Sub
 
@@ -44,21 +50,31 @@
         Dim couleur As DialogResult
         couleur = ColorDialog3.ShowDialog
         If couleur = Windows.Forms.DialogResult.OK Then
+            Button4.BackgroundImage = Nothing
             Button4.BackColor = ColorDialog3.Color
-            setColorBienPlace(ColorDialog1.Color)
+            setColorBienPlace(ColorDialog3.Color)
         End If
     End Sub
 
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
-        'stopChrono()
+        setTempsBool(False)
+        MessageBox.Show("Le temps a été retiré avec succès.")
     End Sub
 
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
         setTime(TextBox6.Text)
+
     End Sub
 
     Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        'setNBChance()
+        Dim chance As Integer = 0
+        Integer.TryParse(TextBox7.Text.Trim(), chance)
+        setNBChance(chance)
+    End Sub
+
+    Private Sub setNBChance(chances As Integer)
+        newNbCoups = chances
+        MessageBox.Show("Le nombre de chance à été mis à jour avec succès.")
     End Sub
 
     Private Sub Button8_Click(sender As Object, e As EventArgs) Handles Button8.Click
@@ -74,12 +90,12 @@
             TextBox8.Text = fBrowser.SelectedPath
         End If
         fBrowser.Dispose()
-        'setCheminFichier(textbox8.text)
+        setCheminFichier(TextBox8.Text)
     End Sub
     Private Sub setTime(ByVal time As String)
-
-        ' Exemple : Enregistrer le temps dans une variable globale
-        tempsImparti = Integer.Parse(time)
+        setTempsBool(True)
+        ' Enregistrer le temps dans une variable globale
+        setTempsImparti(Integer.Parse(time))
         ' Afficher un message de confirmation
         MessageBox.Show("Le temps imparti a été défini avec succès.")
     End Sub
@@ -89,12 +105,10 @@
         Accueil.Show()
     End Sub
 
-    Private Sub TextBox1_TextChanged(sender As Object, e As EventArgs) Handles TextBox1.TextChanged
-
-    End Sub
 
     Private Sub LinkLabel1_Click(sender As Object, e As EventArgs) Handles LinkLabel1.Click
         Me.Hide()
         Accueil.Show()
     End Sub
+
 End Class

@@ -1,4 +1,6 @@
-﻿Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+﻿Imports System.ComponentModel
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement
+Imports System.Windows.Forms.VisualStyles.VisualStyleElement.ToolBar
 
 Public Class Score
     Private Structure Joueur
@@ -10,32 +12,15 @@ Public Class Score
         Public tempsCombinaison As Integer
     End Structure
 
-    ' Liste pour stocker les joueurs
     Private joueurs As New List(Of Joueur)
     Private Sub Score_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        Dim nomsJ As String() = Module1.GetNomsJoueurs()
 
-        ' Ajouter les colonnes dans chaque ListBox
-        ListBox1.Items.Add("Nom")
-        ListBox2.Items.Add("Score")
-        ListBox3.Items.Add("meilleur Temps")
-        ListBox4.Items.Add("Nb Parties J1")
-        ListBox5.Items.Add("Nb Parties J2")
-        ListBox6.Items.Add("temps Combinaison")
-
-
-        ' Ajouter les ListBox au formulaire
-        Controls.Add(ListBox1)
-        Controls.Add(ListBox2)
-        Controls.Add(ListBox3)
-        Controls.Add(ListBox4)
-        Controls.Add(ListBox5)
-        Controls.Add(ListBox6)
-
-
+        'mets à jours les jours dans notres ComboBox
+        ComboBoxRechercheJoueur.DataSource = nomsJ
+        ComboBoxRechercheJoueur.SelectedIndex = -1
         ' Charger les données
         LoadData()
-
-
 
     End Sub
 
@@ -44,6 +29,8 @@ Public Class Score
         Dim num As Integer = FreeFile()
         Dim nom As String
         Dim score, meilleurTemps, nbParties, nbParties2, tempsCombinaison As Integer
+        Dim joueurs As New List(Of Joueur)
+
 
         FileOpen(num, "Joueurs.txt", OpenMode.Input)
 
@@ -55,71 +42,63 @@ Public Class Score
             Input(num, nbParties2)
             Input(num, tempsCombinaison)
 
-            'Ajouter les données aux ListBox
-            'ListBox1.Items.Add(nom)
-            'ListBox2.Items.Add(score.ToString())
-            'ListBox3.Items.Add(meilleurTemps.ToString())
-            'ListBox4.Items.Add(nbParties.ToString())
-            'ListBox5.Items.Add(nbParties2.ToString())
-            'ListBox6.Items.Add(tempsCombinaison.ToString())
-
-            ' Ajouter le nom du joueur à la ComboBox de recherche
-            ComboBoxRechercheJoueur.Items.Add(nom)
-
-            ' Ajouter le joueur à la liste
-            Dim joueur As Joueur
-            joueur.nom = nom
-            joueur.score = score
-            joueur.meilleurTemps = meilleurTemps
-            joueur.nbParties = nbParties
-            joueur.nbParties2 = nbParties2
-            joueur.tempsCombinaison = tempsCombinaison
-            joueurs.Add(joueur)
+            ' Vérifier si le joueur avec le même nom existe déjà dans la liste
+            Dim joueurExistant As Joueur = joueurs.Find(Function(joueur) joueur.nom = nom)
+            If joueurExistant.nom = "" Then
+                ' Le joueur n'existe pas, vous pouvez l'ajouter à la liste
+                Dim joueur As Joueur
+                joueur.nom = nom
+                joueur.score = score
+                joueur.meilleurTemps = meilleurTemps
+                joueur.nbParties = nbParties
+                joueur.nbParties2 = nbParties2
+                joueur.tempsCombinaison = tempsCombinaison
+                joueurs.Add(joueur)
+            Else
+                ' Le joueur existe déjà, vous pouvez choisir de mettre à jour ses informations ici si nécessaire
+            End If
         Loop
 
-        FileClose(num)
+
 
         FileClose(num)
 
-        ' Mettre à jour les ListBox avec les données
-        UpdateListBoxes()
 
-    End Sub
+        ' Créer un DataTable pour stocker les données des joueurs
+        Dim dataTable As New DataTable()
 
-    Private Sub UpdateListBoxes()
-        ' Effacer les données actuelles des ListBox
-        ListBox1.Items.Clear()
-        ListBox2.Items.Clear()
-        ListBox3.Items.Clear()
-        ListBox4.Items.Clear()
-        ListBox5.Items.Clear()
-        ListBox6.Items.Clear()
+        ' Définir les colonnes du DataTable
+        dataTable.Columns.Add("Nom")
+        dataTable.Columns.Add("Score", GetType(Integer))
+        dataTable.Columns.Add("Meilleur Temps", GetType(Integer))
+        dataTable.Columns.Add("Nombre de Parties J1", GetType(Integer))
+        dataTable.Columns.Add("Nombre de Parties J2", GetType(Integer))
+        dataTable.Columns.Add("Temps Combinaison", GetType(Integer))
 
-        ' Ajouter les données aux ListBox
+        ' Ajouter les joueurs au DataTable
         For Each joueur In joueurs
-            ListBox1.Items.Add(joueur.nom)
-            ListBox2.Items.Add(joueur.score.ToString())
-            ListBox3.Items.Add(joueur.meilleurTemps.ToString())
-            ListBox4.Items.Add(joueur.nbParties.ToString())
-            ListBox5.Items.Add(joueur.nbParties2.ToString())
-            ListBox6.Items.Add(joueur.tempsCombinaison.ToString())
+            dataTable.Rows.Add(joueur.nom, joueur.score, joueur.meilleurTemps, joueur.nbParties, joueur.nbParties2, joueur.tempsCombinaison)
         Next
+
+        ' Afficher les données du DataTable dans la DataGridView
+        DataGridView1.DataSource = dataTable
+
     End Sub
+
     Private Sub SortByNom()
         ' Trier les joueurs par nom
-        joueurs.Sort(Function(joueur1, joueur2) joueur1.nom.CompareTo(joueur2.nom))
-        UpdateListBoxes()
+        DataGridView1.Sort(DataGridView1.Columns("Nom"), ListSortDirection.Ascending)
+
     End Sub
 
     Private Sub SortByScore()
         ' Trier les joueurs par score
-        joueurs.Sort(Function(joueur1, joueur2) joueur2.score.CompareTo(joueur1.score))
-        UpdateListBoxes()
+        DataGridView1.Sort(DataGridView1.Columns("Score"), ListSortDirection.Descending)
     End Sub
     Private Sub SortByMeilleurTemps()
         ' Trier les joueurs par meilleur temps
-        joueurs.Sort(Function(joueur1, joueur2) joueur1.meilleurTemps.CompareTo(joueur2.meilleurTemps))
-        UpdateListBoxes()
+        DataGridView1.Sort(DataGridView1.Columns("Meilleur Temps"), ListSortDirection.Ascending)
+
     End Sub
 
 
@@ -138,25 +117,23 @@ Public Class Score
 
     Private Sub ComboBoxRechercheJoueur_SelectedIndexChanged(sender As Object, e As EventArgs) Handles ComboBoxRechercheJoueur.SelectedIndexChanged
         ' Récupérer le nom du joueur sélectionné dans la ComboBox
-        Dim joueurNom As String = ComboBoxRechercheJoueur.SelectedItem.ToString()
-        Dim test As Boolean = False
-        ' Rechercher le joueur correspondant dans la liste des joueurs
-        Dim joueurRecherche As Joueur = joueurs.Find(Function(joueur) joueur.nom = joueurNom)
+        Dim joueurNom As String = ComboBoxRechercheJoueur.SelectedItem
+
         ' Variable pour indiquer si le joueur a été trouvé
         Dim joueurTrouve As Boolean = False
 
         ' Rechercher le joueur correspondant dans la liste des joueurs
-        For Each joueur As Joueur In joueurs
+        For Each joueur As JOUEURS In tjoueurs
             If joueur.nom = joueurNom Then
                 joueurTrouve = True
 
                 ' Afficher les statistiques du joueur dans une MessageBox
                 Dim message As String = $"Statistiques pour le joueur : {joueur.nom}" & vbCrLf &
-                                $"Score : {joueur.score}" & vbCrLf &
-                                $"Meilleur Temps : {joueur.meilleurTemps}" & vbCrLf &
-                                $"Nombre de Parties J1 : {joueur.nbParties}" & vbCrLf &
-                                $"Nombre de Parties J2 : {joueur.nbParties2}" & vbCrLf &
-                                $"Temps Combinaison : {joueur.tempsCombinaison}"
+                            $"Score : {joueur.score}" & vbCrLf &
+                            $"Meilleur Temps : {joueur.meilleurTemps}" & vbCrLf &
+                            $"Nombre de Parties J1 : {joueur.nbPartiesJoueur1}" & vbCrLf &
+                            $"Nombre de Parties J2 : {joueur.nbPartiesJoueur2}" & vbCrLf &
+                            $"Temps Combinaison : {joueur.tempsCombinaison}"
 
                 MessageBox.Show(message, "Statistiques du joueur")
 
@@ -171,6 +148,7 @@ Public Class Score
             MessageBox.Show(message, "Erreur de recherche")
         End If
     End Sub
+
 
     Private Sub LinkLabel1_Click(sender As Object, e As EventArgs) Handles LinkLabel1.Click
         Me.Hide()
